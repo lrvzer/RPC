@@ -12,7 +12,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 /**
- * 实现RPC服务核心注解的扫描与解析
+ * 类扫描器
  */
 public class ClassScanner {
 
@@ -34,7 +34,7 @@ public class ClassScanner {
     /**
      * 扫描当前工程中指定包下的所有类信息
      *
-     * @param packageName   扫描的包名
+     * @param packageName   扫描的包名，如 io.rpc.common.scanner
      * @param packagePath   包在磁盘上的完整路径
      * @param recursive     是否递归调用
      * @param classNameList 类名称的集合
@@ -50,7 +50,7 @@ public class ClassScanner {
             return;
         }
 
-        // 自定义过滤规则
+        // 自定义过滤规则，获取目录文件以及".class"文件
         File[] dirFiles = dir.listFiles(file -> (recursive && file.isDirectory() || (file.getName().endsWith(CLASS_FILE_SUFFIX))));
 
         if (dirFiles != null) {
@@ -85,7 +85,7 @@ public class ClassScanner {
      */
     private static String findAndAddClassesInPackageByJar(String packageName,
                                                           List<String> classNameList,
-                                                          boolean recursive,
+                                                          final boolean recursive,
                                                           String packageDirName,
                                                           URL url) throws IOException {
         JarFile jar = ((JarURLConnection) url.openConnection()).getJarFile();
@@ -114,6 +114,7 @@ public class ClassScanner {
 
     /**
      * 扫描指定包下的所有类信息
+     *
      * @param packageName
      * @return
      * @throws Exception

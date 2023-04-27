@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 对RPCService注解进行扫描
+ * @RPCService注解扫描器
  */
 public class RPCServiceScanner extends ClassScanner {
     private static final Logger logger = LoggerFactory.getLogger(RPCServiceScanner.class);

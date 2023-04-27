@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+/**
+ * @RPCReference注解扫描器
+ */
 public class RPCReferenceScanner extends ClassScanner {
     private static final Logger logger = LoggerFactory.getLogger(RPCReferenceScanner.class);
 
