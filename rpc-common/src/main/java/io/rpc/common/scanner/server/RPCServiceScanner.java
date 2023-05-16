@@ -17,8 +17,9 @@ public class RPCServiceScanner extends ClassScanner {
 
     public static Map<String, Object> doScannerWithRPCServiceAnnotationFilterAndRegistryService(/*String host,
                                                                                                 int port,*/
-                                                                                                String scanPackage
-            /*,RegistryService registryService*/) throws Exception {
+            String scanPackage
+            /*,RegistryService registryService*/
+    ) throws Exception {
         Map<String, Object> handlerMap = new HashMap<>();
         List<String> classNameList = getClassNameList(scanPackage);
         if (classNameList.isEmpty())
@@ -37,11 +38,19 @@ public class RPCServiceScanner extends ClassScanner {
                     logger.info("interfaceClassName: {}", rpcService.interfaceClassName());
                     logger.info("version: {}", rpcService.version());
                     logger.info("group: {}", rpcService.group());
+
+                    String serviceName = getServerName(rpcService);
+                    String key = serviceName.concat(rpcService.version()).concat(rpcService.group());
+                    handlerMap.put(key, clazz.newInstance());
                 }
             } catch (Exception e) {
                 logger.error("scan classes throws exception: {0}", e);
             }
         });
         return handlerMap;
+    }
+
+    private static String getServerName(RPCService rpcService) {
+        return rpcService.interfaceClassName();
     }
 }

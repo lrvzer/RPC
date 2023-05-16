@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class RPCReferenceScanner extends ClassScanner {
     private static final Logger logger = LoggerFactory.getLogger(RPCReferenceScanner.class);
 
-    public static Map<String, Object> doScannerWithRPCReferenceAnnotationFilterAndRegistryService(/*String host,
+    public static Map<String, Object> doScannerWithRPCReferenceAnnotationFilter(/*String host,
                                                                                                   int port,*/
                                                                                                   String scanPackage
             /*,RegistryService registryService*/) throws Exception {
