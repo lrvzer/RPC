@@ -14,6 +14,11 @@
         <module>rpc-test</module>
         <module>rpc-provider</module>
         <module>rpc-test</module>
+        <module>rpc-protocol</module>
+        <module>rpc-constants</module>
+        <module>rpc-codec</module>
+        <module>rpc-serialization</module>
+        <module>rpc-serialization/rpc-serialization-api</module>
     </modules>
 
     <properties>
