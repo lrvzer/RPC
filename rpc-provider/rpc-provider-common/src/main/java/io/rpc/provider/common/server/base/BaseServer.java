@@ -8,8 +8,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
+import io.rpc.codec.RPCDecoder;
+import io.rpc.codec.RPCEncoder;
 import io.rpc.provider.common.handler.RPCProviderHandler;
 import io.rpc.provider.common.server.api.Server;
 import org.slf4j.Logger;
@@ -55,13 +55,13 @@ public class BaseServer implements Server {
                         protected void initChannel(SocketChannel channel) throws Exception {
                             channel
                                     .pipeline()
-                                    .addLast(new StringDecoder())
-                                    .addLast(new StringEncoder())
+                                    .addLast(new RPCDecoder())
+                                    .addLast(new RPCEncoder())
                                     .addLast(new RPCProviderHandler(handlerMap));
                         }
                     }).option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true);
-            ChannelFuture future = bootstrap.bind(host, port);
+            ChannelFuture future = bootstrap.bind(host, port).sync();
             logger.info("server started on {}:{}", host, port);
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
