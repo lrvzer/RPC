@@ -50,4 +50,5 @@ public class JdkSerialization implements Serialization {
             throw new SerializerException(e.getMessage(), e);
         }
     }
+
 }

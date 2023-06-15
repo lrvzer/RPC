@@ -1,6 +1,7 @@
 package io.rpc.common.scanner.server;
 
 import io.rpc.annotation.RPCService;
+import io.rpc.common.helper.RPCServiceHelper;
 import io.rpc.common.scanner.ClassScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class RPCServiceScanner extends ClassScanner {
                     logger.info("group: {}", rpcService.group());
 
                     String serviceName = getServerName(rpcService);
-                    String key = serviceName.concat(rpcService.version()).concat(rpcService.group());
+                    String key = RPCServiceHelper.buildServiceKey(serviceName, rpcService.version(), rpcService.group());
                     handlerMap.put(key, clazz.newInstance());
                 }
             } catch (Exception e) {
