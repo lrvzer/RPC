@@ -5,12 +5,17 @@ import io.rpc.protocol.RPCProtocol;
 import io.rpc.protocol.header.RPCHeader;
 import io.rpc.protocol.header.RPCHeaderFactory;
 import io.rpc.protocol.request.RPCRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RPCConsumerHandlerTest {
+
+    private static Logger logger = LoggerFactory.getLogger(RPCConsumerHandlerTest.class);
+
     public static void main(String[] args) throws Exception {
         RPCConsumer consumer = RPCConsumer.getInstance();
-        consumer.sendRequest(getPRCRequestProtocol());
-        Thread.sleep(2000);
+        Object result = consumer.sendRequest(getPRCRequestProtocol());
+        logger.info("从服务消费者获取到的对象--->{}", result.toString());
         consumer.close();
     }
 
