@@ -7,12 +7,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.rpc.common.helper.RPCServiceHelper;
 import io.rpc.common.threadpool.ServerThreadPool;
+import io.rpc.constant.RPCConstants;
 import io.rpc.protocol.RPCProtocol;
 import io.rpc.protocol.enumeration.RPCStatus;
 import io.rpc.protocol.enumeration.RPCType;
 import io.rpc.protocol.header.RPCHeader;
 import io.rpc.protocol.request.RPCRequest;
 import io.rpc.protocol.response.RPCResponse;
+import net.sf.cglib.reflect.FastClass;
+import net.sf.cglib.reflect.FastMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,24 +29,27 @@ public class RPCProviderHandler extends SimpleChannelInboundHandler<RPCProtocol<
 
     private final Logger logger = LoggerFactory.getLogger(RPCProviderHandler.class);
     private final Map<String, Object> handlerMap;
+    // 调用采用哪种类型调用真实方法
+    private final String reflectType;
 
-    public RPCProviderHandler(Map<String, Object> handlerMap) {
+    public RPCProviderHandler(Map<String, Object> handlerMap, String reflectType) {
         this.handlerMap = handlerMap;
+        this.reflectType = reflectType;
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, RPCProtocol<RPCRequest> protocol) throws Exception {
-        logger.info("RCP提供者收到的数据为：{}", JSONObject.toJSONString(protocol));
-        logger.info("handlerMap中存放的数据如下所示：");
+        logger.debug("RCP提供者收到的数据为：{}", JSONObject.toJSONString(protocol));
+        logger.debug("handlerMap中存放的数据如下所示：");
         for (Map.Entry<String, Object> entry : handlerMap.entrySet()) {
-            logger.info("{}==={}", entry.getKey(), entry.getValue());
+            logger.debug("{}==={}", entry.getKey(), entry.getValue());
         }
         ServerThreadPool.submit(() -> {
             RPCHeader header = protocol.getHeader();
             // 将header中的消息类型设置为响应类型的消息
             header.setMsgType((byte) RPCType.RESPONSE.getType());
             RPCRequest request = protocol.getBody();
-            logger.debug("Receive request " + header.getRequestId());
+            logger.debug("Receive request {}", header.getRequestId());
 
             // 构建响应协议数据
             RPCProtocol<RPCResponse> responseRPCProtocol = new RPCProtocol<>();
@@ -104,8 +110,28 @@ public class RPCProviderHandler extends SimpleChannelInboundHandler<RPCProtocol<
     }
 
     private Object invokeMethod(Object serviceBean, Class<?> serviceClass, String methodName, Class<?>[] parameterTypes, Object[] parameters) throws Throwable {
+        switch (this.reflectType) {
+            case RPCConstants.REFLECT_TYPE_JDK:
+                return invokeJDKMethod(serviceBean, serviceClass, methodName, parameterTypes, parameters);
+            case RPCConstants.REFLECT_TYPE_CGLIB:
+                return invokeCGLibMethod(serviceBean, serviceClass, methodName, parameterTypes, parameters);
+            default:
+                throw new IllegalArgumentException("not support reflect type");
+        }
+    }
+
+    private Object invokeCGLibMethod(Object serviceBean, Class<?> serviceClass, String methodName, Class<?>[] parameterTypes, Object[] parameters) throws Throwable {
+        logger.info("use cglib reflect type invoke method...");
+        FastClass serviceFastClass = FastClass.create(serviceClass);
+        FastMethod serviceFastMethod = serviceFastClass.getMethod(methodName, parameterTypes);
+        return serviceFastMethod.invoke(serviceBean, parameters);
+    }
+
+    private Object invokeJDKMethod(Object serviceBean, Class<?> serviceClass, String methodName, Class<?>[] parameterTypes, Object[] parameters) throws Throwable {
+        logger.info("use jdk reflect type invoke method...");
         Method method = serviceClass.getMethod(methodName, parameterTypes);
         method.setAccessible(true);
         return method.invoke(serviceBean, parameters);
     }
+
 }
