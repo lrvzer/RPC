@@ -19,6 +19,7 @@
         <module>rpc-codec</module>
         <module>rpc-serialization</module>
         <module>rpc-serialization/rpc-serialization-api</module>
+        <module>rpc-consumer</module>
     </modules>
 
     <properties>

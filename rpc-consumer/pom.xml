@@ -5,15 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.rpc</groupId>
-        <artifactId>rpc-test</artifactId>
+        <artifactId>rpc</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>rpc-test-consumer</artifactId>
+    <artifactId>rpc-consumer</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>rpc-test-consumer-codec</module>
-        <module>rpc-test-consumer-handler</module>
+        <module>rpc-consumer-common</module>
     </modules>
 
     <properties>
