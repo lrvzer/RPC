@@ -1,6 +1,7 @@
 package io.rpc.test.consumer;
 
 import io.rpc.consumer.common.RPCConsumer;
+import io.rpc.consumer.common.future.RPCFuture;
 import io.rpc.protocol.RPCProtocol;
 import io.rpc.protocol.header.RPCHeader;
 import io.rpc.protocol.header.RPCHeaderFactory;
@@ -14,8 +15,8 @@ public class RPCConsumerHandlerTest {
 
     public static void main(String[] args) throws Exception {
         RPCConsumer consumer = RPCConsumer.getInstance();
-        Object result = consumer.sendRequest(getPRCRequestProtocol());
-        logger.info("从服务消费者获取到的对象--->{}", result.toString());
+        RPCFuture future = consumer.sendRequest(getPRCRequestProtocol());
+        logger.info("从服务消费者获取到的对象--->{}", future.get());
         consumer.close();
     }
 

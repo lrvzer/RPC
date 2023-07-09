@@ -6,6 +6,7 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.rpc.consumer.common.future.RPCFuture;
 import io.rpc.consumer.common.handler.RPCConsumerHandler;
 import io.rpc.consumer.common.initializer.RPCConsumerInitializer;
 import io.rpc.protocol.RPCProtocol;
@@ -48,7 +49,7 @@ public class RPCConsumer {
         eventLoopGroup.shutdownGracefully();
     }
 
-    public Object sendRequest(RPCProtocol<RPCRequest> protocol) throws Exception {
+    public RPCFuture sendRequest(RPCProtocol<RPCRequest> protocol) throws Exception {
         // TODO 暂时写死，后续引入注册中心时，从注册中心获取
         String serviceAddress = "127.0.0.1";
         int port = 27880;
