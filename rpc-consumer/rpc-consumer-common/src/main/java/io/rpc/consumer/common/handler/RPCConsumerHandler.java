@@ -23,7 +23,7 @@ public class RPCConsumerHandler extends SimpleChannelInboundHandler<RPCProtocol<
     private volatile Channel channel;
     private SocketAddress remotePeer;
 
-    private Map<Long, RPCFuture> pendingRPC = new ConcurrentHashMap<>();
+    private static final Map<Long, RPCFuture> pendingRPC = new ConcurrentHashMap<>();
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {

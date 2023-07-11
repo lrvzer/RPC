@@ -11,11 +11,12 @@ import org.slf4j.LoggerFactory;
 
 public class RPCConsumerHandlerTest {
 
-    private static Logger logger = LoggerFactory.getLogger(RPCConsumerHandlerTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(RPCConsumerHandlerTest.class);
 
     public static void main(String[] args) throws Exception {
         RPCConsumer consumer = RPCConsumer.getInstance();
         RPCFuture future = consumer.sendRequest(getPRCRequestProtocol());
+        Thread.sleep(1000);
         logger.info("从服务消费者获取到的对象--->{}", future.get());
         consumer.close();
     }
