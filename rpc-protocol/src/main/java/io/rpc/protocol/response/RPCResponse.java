@@ -8,6 +8,10 @@ public class RPCResponse extends RPCMessage {
     private String error;
     private Object result;
 
+    public boolean isError() {
+        return error != null;
+    }
+
     public String getError() {
         return error;
     }

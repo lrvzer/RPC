@@ -1,6 +1,7 @@
 package io.rpc.test.consumer;
 
 import io.rpc.consumer.common.RPCConsumer;
+import io.rpc.consumer.common.callback.AsyncRPCCallback;
 import io.rpc.consumer.common.context.RPCContext;
 import io.rpc.consumer.common.future.RPCFuture;
 import io.rpc.protocol.RPCProtocol;
@@ -17,7 +18,7 @@ public class RPCConsumerHandlerTest {
     /**
      * test oneway:false,async:true
      */
-    public static void main(String[] args) throws Exception {
+    public static void main3(String[] args) throws Exception {
         RPCConsumer consumer = RPCConsumer.getInstance();
         consumer.sendRequest(getPRCRequestProtocol());
         logger.info("无需获取返回的结果数据");
@@ -38,11 +39,23 @@ public class RPCConsumerHandlerTest {
     }
 
     /**
+     * main1
      * test oneway:false,async:false
      */
-    public static void main1(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         RPCConsumer consumer = RPCConsumer.getInstance();
         RPCFuture future = consumer.sendRequest(getPRCRequestProtocol());
+        future.addCallback(new AsyncRPCCallback() {
+            @Override
+            public void onSuccess(Object result) {
+                logger.info("从服务消费者获取到的数据--->{}", result);
+            }
+
+            @Override
+            public void onException(Exception e) {
+                logger.info("抛出异常--->{}", e);
+            }
+        });
         Thread.sleep(1000);
         logger.info("从服务消费者获取到的对象--->{}", future.get());
         consumer.close();
@@ -60,13 +73,14 @@ public class RPCConsumerHandlerTest {
         request.setParameterTypes(new Class[]{String.class});
         request.setVersion("1.0.0");
         // 对应main1
-//        request.setAsync(false);
-//        request.setOneway(false);
+        request.setAsync(false);
+        request.setOneway(false);
         // main2
 //        request.setAsync(true);
 //        request.setOneway(false);
-        request.setAsync(false);
-        request.setOneway(true);
+        // main3
+//        request.setAsync(false);
+//        request.setOneway(true);
         protocol.setBody(request);
         return protocol;
     }
