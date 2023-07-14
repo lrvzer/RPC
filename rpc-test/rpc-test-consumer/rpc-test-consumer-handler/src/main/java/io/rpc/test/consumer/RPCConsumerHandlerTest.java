@@ -1,13 +1,13 @@
 package io.rpc.test.consumer;
 
 import io.rpc.consumer.common.RPCConsumer;
-import io.rpc.consumer.common.callback.AsyncRPCCallback;
 import io.rpc.consumer.common.context.RPCContext;
-import io.rpc.consumer.common.future.RPCFuture;
 import io.rpc.protocol.RPCProtocol;
 import io.rpc.protocol.header.RPCHeader;
 import io.rpc.protocol.header.RPCHeaderFactory;
 import io.rpc.protocol.request.RPCRequest;
+import io.rpc.proxy.api.callback.AsyncRPCCallback;
+import io.rpc.proxy.api.future.RPCFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

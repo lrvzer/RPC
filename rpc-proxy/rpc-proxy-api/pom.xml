@@ -5,17 +5,18 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.rpc</groupId>
-        <artifactId>rpc-consumer</artifactId>
+        <artifactId>rpc-proxy</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>rpc-consumer-common</artifactId>
+    <artifactId>rpc-proxy-api</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>io.rpc</groupId>
@@ -23,27 +24,6 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>io.rpc</groupId>
-            <artifactId>rpc-codec</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rpc</groupId>
-            <artifactId>rpc-proxy-api</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
-        </dependency>
-
     </dependencies>
 
 </project>
