@@ -154,22 +154,21 @@ public class RPCFuture extends CompletableFuture<Object> {
 
         private static final long serialVersionUID = -1725634303906208000L;
         // future status
-        private final int done = 1;
-        private final int pending = 0;
+        private static final int DONE = 1;
+        private static final int PENDING = 0;
 
         @Override
         protected boolean tryAcquire(int acquire) {
-            if (getState() == pending) {
-                if (compareAndSetState(pending, done)) {
-                    return true;
-                }
-            }
-            return false;
+            return getState() == DONE;
+        }
+
+        @Override
+        protected boolean tryRelease(int arg) {
+            return (getState() == PENDING) && (compareAndSetState(PENDING, DONE));
         }
 
         public boolean isDone() {
-            getState();
-            return getState() == done;
+            return getState() == DONE;
         }
     }
 }
