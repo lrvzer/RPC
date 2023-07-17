@@ -5,22 +5,31 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.rpc</groupId>
-        <artifactId>rpc-test</artifactId>
+        <artifactId>rpc-consumer</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>rpc-test-consumer</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>rpc-test-consumer-codec</module>
-        <module>rpc-test-consumer-handler</module>
-        <module>rpc-test-consumer-native</module>
-    </modules>
+    <artifactId>rpc-consumer-native</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <dependencies>
+        <dependency>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-proxy-jdk</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-consumer-common</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 </project>
