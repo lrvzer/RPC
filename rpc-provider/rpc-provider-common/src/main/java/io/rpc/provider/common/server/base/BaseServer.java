@@ -12,6 +12,9 @@ import io.rpc.codec.RPCDecoder;
 import io.rpc.codec.RPCEncoder;
 import io.rpc.provider.common.handler.RPCProviderHandler;
 import io.rpc.provider.common.server.api.Server;
+import io.rpc.registry.api.RegistryService;
+import io.rpc.registry.api.config.RegistryConfig;
+import io.rpc.registry.zookeeper.ZookeeperRegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -29,16 +32,30 @@ public class BaseServer implements Server {
     // 存储的是实体类关系
     protected Map<String, Object> handlerMap = new HashMap<>();
 
+    protected RegistryService registryService;
+
     private final String reflectType;
 
-    public BaseServer(String serverAddress, String reflectType) {
+    public BaseServer(String serverAddress, String registryAddress, String registryType, String reflectType) {
         if (!StringUtils.isEmpty(serverAddress)) {
             String[] serverArray = serverAddress.split(":");
             this.host = serverArray[0];
             this.port = Integer.parseInt(serverArray[1]);
         }
-
         this.reflectType = reflectType;
+        this.registryService = this.getRegistryService(registryAddress, registryType);
+    }
+
+    private RegistryService getRegistryService(String registryAddress, String registryType) {
+        // TODO 后续拓展支持SPI
+        RegistryService registryService = null;
+        try {
+            registryService = new ZookeeperRegistryService();
+            registryService.init(new RegistryConfig(registryAddress, registryType));
+        } catch (Exception e) {
+            logger.error("RPC Server init error", e);
+        }
+        return registryService;
     }
 
     /**

@@ -1,8 +1,10 @@
-package io.rpc.common.scanner.server;
+package io.rpc.provider.common.scanner;
 
 import io.rpc.annotation.RPCService;
 import io.rpc.common.helper.RPCServiceHelper;
 import io.rpc.common.scanner.ClassScanner;
+import io.rpc.protocol.meta.ServiceMeta;
+import io.rpc.registry.api.RegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,10 +18,10 @@ import java.util.Map;
 public class RPCServiceScanner extends ClassScanner {
     private static final Logger logger = LoggerFactory.getLogger(RPCServiceScanner.class);
 
-    public static Map<String, Object> doScannerWithRPCServiceAnnotationFilterAndRegistryService(/*String host,
-                                                                                                int port,*/
-            String scanPackage
-            /*,RegistryService registryService*/
+    public static Map<String, Object> doScannerWithRPCServiceAnnotationFilterAndRegistryService(String host,
+                                                                                                int port,
+                                                                                                String scanPackage,
+                                                                                                RegistryService registryService
     ) throws Exception {
         Map<String, Object> handlerMap = new HashMap<>();
         List<String> classNameList = getClassNameList(scanPackage);
@@ -32,16 +34,12 @@ public class RPCServiceScanner extends ClassScanner {
                 // 处理注解信息
                 if (rpcService != null) {
                     // 对于@RPCService中的配置，优先使用interfaceClass，如果interfaceClass为空，再使用interfaceClassName
-                    // TODO 处理后续逻辑
-                    logger.info("当前标注了 @RpcService 注解的类实例名称 ===>>> {}", clazz.getName());
-                    logger.info("@RpcService 注解上标注的属性信息如下：");
-                    logger.info("interfaceClass: {}", rpcService.interfaceClass().getName());
-                    logger.info("interfaceClassName: {}", rpcService.interfaceClassName());
-                    logger.info("version: {}", rpcService.version());
-                    logger.info("group: {}", rpcService.group());
+                    ServiceMeta serviceMeta = new ServiceMeta(getServiceName(rpcService), rpcService.version(), host, port, rpcService.group());
+                    // 将元数据注册到注册中心
+                    registryService.registry(serviceMeta);
 
-                    String serviceName = getServerName(rpcService);
-                    String key = RPCServiceHelper.buildServiceKey(serviceName, rpcService.version(), rpcService.group());
+                    String key =
+                            RPCServiceHelper.buildServiceKey(serviceMeta.getServiceName(), serviceMeta.getServiceVersion(), serviceMeta.getServiceGroup());
                     handlerMap.put(key, clazz.newInstance());
                 }
             } catch (Exception e) {
@@ -51,7 +49,7 @@ public class RPCServiceScanner extends ClassScanner {
         return handlerMap;
     }
 
-    private static String getServerName(RPCService rpcService) {
+    private static String getServiceName(RPCService rpcService) {
         return rpcService.interfaceClassName();
     }
 }

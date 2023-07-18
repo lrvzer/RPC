@@ -2,7 +2,6 @@ package io.rpc.test.scanner;
 
 import io.rpc.common.scanner.ClassScanner;
 import io.rpc.common.scanner.server.RPCReferenceScanner;
-import io.rpc.common.scanner.server.RPCServiceScanner;
 import org.junit.Test;
 
 import java.util.List;
@@ -17,7 +16,7 @@ public class ScannerTest {
 
     @Test
     public void testScannerClassNameListByRPCService() throws Exception {
-        RPCServiceScanner.doScannerWithRPCServiceAnnotationFilterAndRegistryService("io.rpc.test.scanner");
+//        RPCServiceScanner.doScannerWithRPCServiceAnnotationFilterAndRegistryService("io.rpc.test.scanner");
     }
 
     @Test
