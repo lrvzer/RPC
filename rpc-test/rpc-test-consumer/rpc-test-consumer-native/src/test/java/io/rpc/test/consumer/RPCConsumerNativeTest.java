@@ -14,6 +14,8 @@ public class RPCConsumerNativeTest {
     @Test
     public void testInterfaceRPC() {
         RPCClient rpcClient = new RPCClient(
+                "127.0.0.1:2181",
+                "zookeeper",
                 "1.0.0",
                 "lrw",
                 "jdk",
@@ -28,7 +30,8 @@ public class RPCConsumerNativeTest {
 
     @Test
     public void testAsyncInterfaceRPC() throws Exception {
-        RPCClient rpcClient = new RPCClient("1.0.0", "lrw", "jdk", 300, false, false);
+        RPCClient rpcClient = new RPCClient("127.0.0.1:2181",
+                "zookeeper", "1.0.0", "lrw", "jdk", 300, false, false);
         IAsyncObjectProxy demoService = rpcClient.createAsync(DemoService.class);
         RPCFuture future = demoService.call("hello", "rpc-2023-7-17");
         Thread.sleep(1000);

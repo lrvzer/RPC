@@ -26,6 +26,13 @@
 
         <dependency>
             <groupId>io.rpc</groupId>
+            <artifactId>rpc-registry-zookeeper</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rpc</groupId>
             <artifactId>rpc-consumer-common</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>

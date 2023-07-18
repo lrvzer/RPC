@@ -3,6 +3,7 @@ package io.rpc.proxy.api.consumer;
 import io.rpc.protocol.RPCProtocol;
 import io.rpc.protocol.request.RPCRequest;
 import io.rpc.proxy.api.future.RPCFuture;
+import io.rpc.registry.api.RegistryService;
 
 public interface Consumer {
     /**
@@ -12,5 +13,5 @@ public interface Consumer {
      * @return
      * @throws Exception
      */
-    RPCFuture sendRequest(RPCProtocol<RPCRequest> protocol) throws Exception;
+    RPCFuture sendRequest(RPCProtocol<RPCRequest> protocol, RegistryService registryService) throws Exception;
 }

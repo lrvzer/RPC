@@ -18,6 +18,9 @@ public class ServiceMeta implements Serializable {
     // 服务分组
     private String serviceGroup;
 
+    public ServiceMeta() {
+    }
+
     public ServiceMeta(String serviceName, String serviceVersion, String serviceAddr, int servicePort, String serviceGroup) {
         this.serviceName = serviceName;
         this.serviceVersion = serviceVersion;

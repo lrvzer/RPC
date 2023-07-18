@@ -6,13 +6,17 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.rpc.common.helper.RPCServiceHelper;
 import io.rpc.common.threadpool.ClientThreadPool;
-import io.rpc.proxy.api.consumer.Consumer;
-import io.rpc.proxy.api.future.RPCFuture;
 import io.rpc.consumer.common.handler.RPCConsumerHandler;
+import io.rpc.consumer.common.helper.RPCConsumerHandlerHelper;
 import io.rpc.consumer.common.initializer.RPCConsumerInitializer;
 import io.rpc.protocol.RPCProtocol;
+import io.rpc.protocol.meta.ServiceMeta;
 import io.rpc.protocol.request.RPCRequest;
+import io.rpc.proxy.api.consumer.Consumer;
+import io.rpc.proxy.api.future.RPCFuture;
+import io.rpc.registry.api.RegistryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,29 +52,34 @@ public class RPCConsumer implements Consumer {
     }
 
     public void close() {
+        RPCConsumerHandlerHelper.closeRPCClientHandler();
         eventLoopGroup.shutdownGracefully();
         ClientThreadPool.shutdown();
     }
 
     @Override
-    public RPCFuture sendRequest(RPCProtocol<RPCRequest> protocol) throws Exception {
-        // TODO 暂时写死，后续引入注册中心时，从注册中心获取
-        String serviceAddress = "127.0.0.1";
-        int port = 27880;
-        String key = serviceAddress.concat("_").concat(String.valueOf(port));
-        RPCConsumerHandler handler = handlerMap.get(key);
-        if (handler == null) {
-            handler = getRPCConsumerHandler(serviceAddress, port);
-            handlerMap.put(key, handler);
-        }
-        // 缓存中存在RPCClientHandler，但不活跃
-        else if (!handler.getChannel().isActive()) {
-            handler.close();
-            handler = getRPCConsumerHandler(serviceAddress, port);
-            handlerMap.put(key, handler);
-        }
+    public RPCFuture sendRequest(RPCProtocol<RPCRequest> protocol, RegistryService registryService) throws Exception {
         RPCRequest request = protocol.getBody();
-        return handler.sendRequest(protocol, request.isAsync(), request.isOneway());
+        String serviceKey = RPCServiceHelper.buildServiceKey(request.getClassName(), request.getVersion(), request.getGroup());
+        Object[] params = request.getParameters();
+        int invokerHashCode = (params == null || params.length <= 0) ? serviceKey.hashCode() : params[0].hashCode();
+        ServiceMeta serviceMeta = registryService.discovery(serviceKey, invokerHashCode);
+        if (serviceMeta != null) {
+            RPCConsumerHandler handler = RPCConsumerHandlerHelper.get(serviceMeta);
+            // 缓存中五RPCClientHandler
+            if (handler == null) {
+                handler = getRPCConsumerHandler(serviceMeta.getServiceAddr(), serviceMeta.getServicePort());
+                RPCConsumerHandlerHelper.put(serviceMeta, handler);
+            }
+            // 缓存中存在RPCClientHandler，但不活跃
+            else if (!handler.getChannel().isActive()) {
+                handler.close();
+                handler = getRPCConsumerHandler(serviceMeta.getServiceAddr(), serviceMeta.getServicePort());
+                RPCConsumerHandlerHelper.put(serviceMeta, handler);
+            }
+            return handler.sendRequest(protocol, request.isAsync(), request.isOneway());
+        }
+        return null;
     }
 
     private RPCConsumerHandler getRPCConsumerHandler(String serviceAddress, int port) throws InterruptedException {

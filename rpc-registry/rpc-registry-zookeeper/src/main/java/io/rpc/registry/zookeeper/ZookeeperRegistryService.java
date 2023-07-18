@@ -11,6 +11,8 @@ import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Random;
 
 public class ZookeeperRegistryService implements RegistryService {
+    private static final Logger logger = LoggerFactory.getLogger(ZookeeperRegistryService.class);
 
     /**
      * 初始化CuratorFramework客户端时，进行连接重试的间隔时间
@@ -81,6 +84,7 @@ public class ZookeeperRegistryService implements RegistryService {
     @Override
     public ServiceMeta discovery(String serviceName, int invokerHashCode) throws Exception {
         Collection<ServiceInstance<ServiceMeta>> serviceInstances = serviceDiscovery.queryForInstances(serviceName);
+        logger.info("serviceName: {}, serviceInstances: {}", serviceName, serviceInstances);
         ServiceInstance<ServiceMeta> instance = this.selectOneServiceInstance((List<ServiceInstance<ServiceMeta>>) serviceInstances);
         if (instance != null) {
             return instance.getPayload();
