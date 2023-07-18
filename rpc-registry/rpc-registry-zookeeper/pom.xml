@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.rpc</groupId>
-        <artifactId>rpc-provider</artifactId>
+        <artifactId>rpc-registry</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>rpc-provider-common</artifactId>
+    <artifactId>rpc-registry-zookeeper</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -20,30 +20,35 @@
     <dependencies>
         <dependency>
             <groupId>io.rpc</groupId>
-            <artifactId>rpc-codec</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rpc</groupId>
             <artifactId>rpc-registry-api</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>io.rpc</groupId>
-            <artifactId>rpc-registry-zookeeper</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>${curator.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>${curator.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-x-discovery</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
