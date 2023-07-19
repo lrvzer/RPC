@@ -26,6 +26,20 @@
         </dependency>
 
         <dependency>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-loadbalancer-api</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-loadbalancer-random</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
             <version>${curator.version}</version>

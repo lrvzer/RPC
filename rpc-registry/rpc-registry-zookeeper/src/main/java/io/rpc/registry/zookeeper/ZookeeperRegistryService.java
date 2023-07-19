@@ -1,6 +1,8 @@
 package io.rpc.registry.zookeeper;
 
 import io.rpc.common.helper.RPCServiceHelper;
+import io.rpc.loadbalancer.api.ServiceLoadBalancer;
+import io.rpc.loadbalancer.random.RandomServiceLoadBalancer;
 import io.rpc.protocol.meta.ServiceMeta;
 import io.rpc.registry.api.RegistryService;
 import io.rpc.registry.api.config.RegistryConfig;
@@ -17,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 
 public class ZookeeperRegistryService implements RegistryService {
     private static final Logger logger = LoggerFactory.getLogger(ZookeeperRegistryService.class);
@@ -26,18 +27,23 @@ public class ZookeeperRegistryService implements RegistryService {
      * 初始化CuratorFramework客户端时，进行连接重试的间隔时间
      */
     public static final int BASE_SLEEP_TIME_MS = 1000;
+
     /**
      * 初始化CuratorFramework客户端时，进行连接重试的最大重试次数
      */
     public static final int MAX_RETRIES = 3;
+
     /**
      * 服务注册到Zookeeper的根路径
      */
     public static final String ZK_BASE_PATH = "/rpc";
+
     /**
      * 服务注册与发现的ServiceDiscovery类实例
      */
     private ServiceDiscovery<ServiceMeta> serviceDiscovery;
+
+    private ServiceLoadBalancer<ServiceInstance<ServiceMeta>> serviceLoadBalancer;
 
     /**
      * 服务注册
@@ -84,21 +90,11 @@ public class ZookeeperRegistryService implements RegistryService {
     @Override
     public ServiceMeta discovery(String serviceName, int invokerHashCode) throws Exception {
         Collection<ServiceInstance<ServiceMeta>> serviceInstances = serviceDiscovery.queryForInstances(serviceName);
-        logger.info("serviceName: {}, serviceInstances: {}", serviceName, serviceInstances);
-        ServiceInstance<ServiceMeta> instance = this.selectOneServiceInstance((List<ServiceInstance<ServiceMeta>>) serviceInstances);
+        ServiceInstance<ServiceMeta> instance = serviceLoadBalancer.select((List<ServiceInstance<ServiceMeta>>) serviceInstances, invokerHashCode);
         if (instance != null) {
             return instance.getPayload();
         }
         return null;
-    }
-
-    private ServiceInstance<ServiceMeta> selectOneServiceInstance(List<ServiceInstance<ServiceMeta>> serviceInstances) {
-        if (serviceInstances == null || serviceInstances.isEmpty()) {
-            return null;
-        }
-        Random random = new Random();
-        int index = random.nextInt(serviceInstances.size());
-        return serviceInstances.get(index);
     }
 
     /**
@@ -128,5 +124,6 @@ public class ZookeeperRegistryService implements RegistryService {
                 .basePath(ZK_BASE_PATH)
                 .build();
         this.serviceDiscovery.start();
+        this.serviceLoadBalancer = new RandomServiceLoadBalancer<>();
     }
 }
