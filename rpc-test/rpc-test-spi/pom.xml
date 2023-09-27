@@ -5,41 +5,29 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>io.rpc</groupId>
-        <artifactId>rpc</artifactId>
+        <artifactId>rpc-test</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>rpc-test</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>rpc-test-scanner</module>
-        <module>rpc-test-provider</module>
-        <module>rpc-test-consumer</module>
-        <module>rpc-test-api</module>
-        <module>rpc-test-registry</module>
-        <module>rpc-test-spi</module>
-    </modules>
+    <artifactId>rpc-test-spi</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <rpc-common.version>1.0.0</rpc-common.version>
-        <rpc-provider.version>1.0.0</rpc-provider.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.rpc</groupId>
-            <artifactId>rpc-common</artifactId>
-            <version>${rpc-common.version}</version>
+            <artifactId>rpc-spi</artifactId>
+            <version>${project.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>io.rpc</groupId>
-            <artifactId>rpc-provider-native</artifactId>
-            <version>${rpc-provider.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
