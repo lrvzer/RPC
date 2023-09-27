@@ -20,4 +20,9 @@ public class RPCConstants {
      */
     public static final String REFLECT_TYPE_CGLIB = "cglib";
 
+    /**
+     * SERIALIZATION_TYPE_JDK
+     */
+    public static final String SERIALIZATION_JDK = "jdk";
+
 }
