@@ -22,27 +22,12 @@
             <groupId>io.rpc</groupId>
             <artifactId>rpc-codec</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>io.rpc</groupId>
-            <artifactId>rpc-registry-api</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>io.rpc</groupId>
             <artifactId>rpc-registry-zookeeper</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
         </dependency>
     </dependencies>
 

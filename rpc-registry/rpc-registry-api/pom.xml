@@ -22,7 +22,12 @@
             <groupId>io.rpc</groupId>
             <artifactId>rpc-protocol</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-loadbalancer-random</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

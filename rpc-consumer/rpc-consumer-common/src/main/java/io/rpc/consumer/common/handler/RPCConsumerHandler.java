@@ -1,17 +1,17 @@
 package io.rpc.consumer.common.handler;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.rpc.consumer.common.context.RPCContext;
-import io.rpc.proxy.api.future.RPCFuture;
 import io.rpc.protocol.RPCProtocol;
 import io.rpc.protocol.header.RPCHeader;
 import io.rpc.protocol.request.RPCRequest;
 import io.rpc.protocol.response.RPCResponse;
+import io.rpc.proxy.api.future.RPCFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public class RPCConsumerHandler extends SimpleChannelInboundHandler<RPCProtocol<
         if (protocol == null) {
             return;
         }
-        logger.info("服务消费者接收到的数据--->{}", JSON.toJSONString(protocol));
+        logger.info("服务消费者接收到的数据--->{}", JSONObject.toJSONString(protocol));
 
         RPCHeader header = protocol.getHeader();
         long requestId = header.getRequestId();
@@ -54,7 +54,7 @@ public class RPCConsumerHandler extends SimpleChannelInboundHandler<RPCProtocol<
     }
 
     public RPCFuture sendRequest(RPCProtocol<RPCRequest> protocol, boolean async, boolean oneway) {
-        logger.info("服务消费者接收到的数据--->{}", JSON.toJSONString(protocol));
+        logger.info("服务消费者发送的数据--->{}", JSONObject.toJSONString(protocol));
         return oneway ? this.sendRequestOneway(protocol) : (async ? sendRequestAsync(protocol) : this.sendRequestSync(protocol));
     }
 

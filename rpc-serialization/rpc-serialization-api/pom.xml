@@ -19,14 +19,13 @@
     <dependencies>
         <dependency>
             <groupId>io.rpc</groupId>
-            <artifactId>rpc-spi</artifactId>
+            <artifactId>rpc-constants</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
             <groupId>io.rpc</groupId>
-            <artifactId>rpc-constants</artifactId>
+            <artifactId>rpc-spi</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

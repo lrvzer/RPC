@@ -21,8 +21,12 @@
         <dependency>
             <groupId>io.rpc</groupId>
             <artifactId>rpc-test-api</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-provider-native</artifactId>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

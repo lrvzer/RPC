@@ -22,7 +22,7 @@
         <dependency>
             <groupId>io.rpc</groupId>
             <artifactId>rpc-annotation</artifactId>
-            <version>${rpc-annotation.version}</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

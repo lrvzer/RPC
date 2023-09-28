@@ -17,31 +17,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
-        <dependency>
-            <groupId>io.rpc</groupId>
-            <artifactId>rpc-protocol</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-
+        <!-- 编码与解码 -->
         <dependency>
             <groupId>io.rpc</groupId>
             <artifactId>rpc-codec</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>io.rpc</groupId>
-            <artifactId>rpc-proxy-api</artifactId>
+            <artifactId>rpc-proxy-jdk</artifactId>
             <version>${project.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.83</version>
+            <groupId>io.rpc</groupId>
+            <artifactId>rpc-registry-zookeeper</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
     </dependencies>

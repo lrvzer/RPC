@@ -13,12 +13,10 @@
         <module>rpc-common</module>
         <module>rpc-test</module>
         <module>rpc-provider</module>
-        <module>rpc-test</module>
         <module>rpc-protocol</module>
         <module>rpc-constants</module>
         <module>rpc-codec</module>
         <module>rpc-serialization</module>
-        <module>rpc-serialization/rpc-serialization-api</module>
         <module>rpc-consumer</module>
         <module>rpc-proxy</module>
         <module>rpc-registry</module>
@@ -51,9 +49,11 @@
         <fst.version>2.56</fst.version>
         <spring.boot.version>2.2.6.RELEASE</spring.boot.version>
         <junit.version>4.12</junit.version>
+        <fastjson.version>1.2.73</fastjson.version>
     </properties>
 
     <dependencies>
+        <!-- SLF4j -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -66,42 +66,53 @@
             <version>${common.version}</version>
         </dependency>
 
+        <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- Netty -->
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
             <version>${netty.version}</version>
         </dependency>
 
+        <!-- Apache Commons Collections -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-collections4</artifactId>
             <version>${commons.collections4.version}</version>
         </dependency>
 
+        <!--Apache Commons lang3-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${commons.lang3.version}</version>
         </dependency>
 
+        <!-- Objenesis -->
         <dependency>
             <groupId>org.objenesis</groupId>
             <artifactId>objenesis</artifactId>
             <version>${objenesis.veriosn}</version>
         </dependency>
 
+        <!-- CGLib -->
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>${cglib.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
@@ -112,13 +123,6 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

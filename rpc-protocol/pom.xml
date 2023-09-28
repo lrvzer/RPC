@@ -19,15 +19,8 @@
     <dependencies>
         <dependency>
             <groupId>io.rpc</groupId>
-            <artifactId>rpc-constants</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.rpc</groupId>
             <artifactId>rpc-common</artifactId>
-            <version>1.0.0</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
