@@ -1,1 +1,1 @@
-jdk=io.rpc.serialization.json.JsonSerialization
+json=io.rpc.serialization.json.JsonSerialization
