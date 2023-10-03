@@ -72,7 +72,7 @@ public class JsonSerialization implements Serialization {
     public <T> T deserialize(byte[] data, Class<T> cls) {
         logger.info("execute json deserialize...");
         if (data == null) {
-            throw new SerializerException("deserialize data is null");
+        throw new SerializerException("deserialize data is null");
         }
 
         T obj;
