@@ -21,7 +21,7 @@ public class RPCConsumerNativeTest {
                 "zookeeper",
                 "1.0.0",
                 "lrw",
-                "kryo",
+                "protostuff",
                 3000,
                 false,
                 false);
